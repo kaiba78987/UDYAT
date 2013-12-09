@@ -41,16 +41,16 @@ public class User implements Serializable {
 	@Temporal (TemporalType.TIMESTAMP)
 	private Date lastEntrance;
 	@OneToMany (mappedBy = "creator", cascade = CascadeType.REMOVE)
-	@OrderBy ("name asc")
+	@OrderBy ("title asc")
 	private List<Project> ownProjects;
 	@ManyToMany (mappedBy="participants")
-	@OrderBy ("name asc")
+	@OrderBy ("title asc")
 	private List<Project> participatedProjects;
 	@ManyToMany (mappedBy="contributors")
-	@OrderBy ("name asc")
+	@OrderBy ("title asc")
 	private List<Project> contributedProjects;
 	@ManyToMany (mappedBy="administrators")
-	@OrderBy ("name asc")
+	@OrderBy ("title asc")
 	private List<Project> managedProjects;
 	private static final long serialVersionUID = 1L;
 

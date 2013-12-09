@@ -18,7 +18,8 @@ public class SafeProjectFactory implements ProjectFactory {
 	public Project createProject(String name, User creator)
 			throws IllegalArgumentException {
 		if ((name.equals("")) | (name==null) | (creator==null)) throw new IllegalArgumentException (this.msg);
-		return new Project(name, creator);
+		Project project = new Project(name, creator);
+		return project;
 	}
 
 }

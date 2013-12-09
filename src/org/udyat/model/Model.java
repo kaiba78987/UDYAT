@@ -1,22 +1,26 @@
 package org.udyat.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
-import javax.persistence.EmbeddedId;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
  * Entity implementation class for Entity: Model.
- * This class represents an UML model's state.
+ * This class represents an UML model's datas.
  * @Author Estrada Martínez, F.J.
  */
 @Entity
@@ -24,20 +28,19 @@ import javax.persistence.TemporalType;
 
 public class Model implements Serializable {
 
-	
-	@EmbeddedId
-	private ModelID id;
+	@Id
+	@GeneratedValue
+	private Long id;
+	@Basic (optional=false)
+	private String title;
 	@ManyToOne (optional=false)
-	@JoinColumn(name="projectid")
 	private Project owner;
-	@Basic (fetch=FetchType.LAZY, optional=false)
-	private String xmi;
+	@OneToMany (mappedBy="model", cascade=CascadeType.REMOVE)
+	@OrderBy ("id desc")
+	private List<ModelVersion> versions;
 	@Basic (optional=false)
 	@Temporal (TemporalType.TIMESTAMP)
 	private Date created;
-	@Basic (optional=false)
-	@Temporal (TemporalType.TIMESTAMP)
-	private Date lastModified;
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -47,36 +50,50 @@ public class Model implements Serializable {
 		super();
 		this.owner=null;
 		this.id=null;
-		this.xmi="";
+		this.title=null;
 		this.created=Calendar.getInstance().getTime();
-		this.lastModified=Calendar.getInstance().getTime();
+		this.versions=new ArrayList<ModelVersion>();
 	}
 	
 	/** Constructs a model with the especified identifiers.
 	 * @param owner The owner project.
-	 * @param name The model's name.
+	 * @param title The  title of model.
 	 */
-	public Model(Project owner, String name) {
+	public Model(Project owner, String title) {
 		super();
 		this.owner = owner;
-		this.id=new ModelID(owner.getId(), name);
-		this.xmi="";
+		this.id=null;
+		this.title=title;
 		this.created=Calendar.getInstance().getTime();
-		this.lastModified=Calendar.getInstance().getTime();
+		this.versions=new ArrayList<ModelVersion> ();
 	}
 
 	/**
 	 * @return the id
 	 */
-	public ModelID getId() {
+	public Long getId() {
 		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(ModelID id) {
+	public void setId(Long id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	/**
@@ -94,17 +111,17 @@ public class Model implements Serializable {
 	}
 
 	/**
-	 * @return the xmi
+	 * @return the versions
 	 */
-	public String getXmi() {
-		return xmi;
+	public List<ModelVersion> getVersions() {
+		return versions;
 	}
 
 	/**
-	 * @param xmi the xmi to set
+	 * @param versions the versions to set
 	 */
-	public void setXmi(String xmi) {
-		this.xmi = xmi;
+	public void setVersions(List<ModelVersion> versions) {
+		this.versions = versions;
 	}
 
 	/**
@@ -121,21 +138,7 @@ public class Model implements Serializable {
 		this.created = created;
 	}
 
-	/**
-	 * @return the lastModified date.
-	 */
-	public Date getLastModified() {
-		return lastModified;
-	}
-
-	/**
-	 * @param lastModified the lastModified date to set
-	 */
-	public void setLastModified(Date lastModified) {
-		this.lastModified = lastModified;
-	}
-
-		/* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -171,8 +174,8 @@ public class Model implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Model [id=" + id.toString() + ", created=" + created + ", lastModified="
-				+ lastModified + "]";
+		return "Model [id=" + id + ", title=" + title + ", owner=" + owner
+				+ ", created=" + created + "]";
 	}
 
 }

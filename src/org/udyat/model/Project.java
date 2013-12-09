@@ -28,7 +28,7 @@ public class Project implements Serializable {
 	@GeneratedValue
 	private Long id;
 	@Basic (optional=false)
-	private String name;
+	private String title;
 	@Basic (optional=false)
 	@Temporal (TemporalType.TIMESTAMP)
 	private Date created;
@@ -47,7 +47,7 @@ private User creator;
 	@OrderBy ("name asc")
 	private List<User> contributors;
 	@OneToMany (mappedBy="owner", cascade = CascadeType.REMOVE)
-	@OrderBy ("name asc")
+	@OrderBy ("title asc")
 	private List<Model> models;
 	@Basic (optional=false)
 	private Boolean publicAccess;
@@ -58,7 +58,7 @@ private User creator;
 	 */
 	public Project() {
 		super();
-		this.name=null;
+		this.title=null;
 		this.created=Calendar.getInstance().getTime();
 		this.creator=null;
 		this.administrators=new ArrayList<User>();
@@ -68,12 +68,12 @@ private User creator;
 	}
 	
 	/** Constructs a new project using the especified identifier and creator.
-	 * @param name The project's name.
+	 * @param title The project title.
 	 * @param creator The creator user.
 	 */
-	public Project(String name, User creator) {
+	public Project(String title, User creator) {
 		super();
-		this.name = name;
+		this.title = title;
 		this.created=Calendar.getInstance().getTime();
 		this.creator=creator;
 		this.administrators=new ArrayList<User>();
@@ -86,13 +86,13 @@ private User creator;
 	}
 
 	/** Constructs a new project using the especified identifier, creator and access type.
-	 * @param name The project's name.
+	 * @param title The project title.
 	 * @param creator the creator user.
 	 * @param publicAccess The access type.
 	 */
-	public Project(String name, User creator, Boolean publicAccess) {
+	public Project(String title, User creator, Boolean publicAccess) {
 		super();
-		this.name = name;
+		this.title = title;
 		this.created=Calendar.getInstance().getTime();
 		this.creator=creator;
 		this.administrators=new ArrayList<User>();
@@ -121,15 +121,15 @@ private User creator;
 	/**
 	 * @return the name
 	 */
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param title the title to set
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title	;
 	}
 
 	/**
@@ -266,7 +266,7 @@ private User creator;
 	 */
 	@Override
 	public String toString() {
-		return "Project [id=" + id + ", name=" + name + ", created=" + created
+		return "Project [id=" + id + ", name=" + title + ", created=" + created
 				+ "]";
 	}
    

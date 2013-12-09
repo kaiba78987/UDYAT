@@ -56,6 +56,7 @@ public class BCryptUserFactoryTest {
 		factory.createUser("",  password,  email);
 		factory.createUser(username,  "",  email);
 		factory.createUser(username, password, "");
+		factory.createUser(username,  password, "pepe.com");
 	}
 	
 }
